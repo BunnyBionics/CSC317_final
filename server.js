@@ -24,7 +24,7 @@ app.get("/stock/:sym", (req, res) => {
   try {
     const prices = db.prepare("select * from prices WHERE stock_id = ?").all(stock.id);
 
-    res.render('stock', {symbol: stock.symbol, price_rows: prices});
+    res.render('stock', {stock: stock, price_rows: prices});
   } catch (error) {
     console.error(`Error finding ${sym} presumably: `, error);
     if (!stock) {
