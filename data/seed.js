@@ -13,13 +13,27 @@ function seed() {
   );
 `);
 
-  // TODO: select all stock ids from stocks to do a for loop
   const insert = db.prepare(`INSERT INTO prices (stock_id, day, price) VALUES (?, ?, ?)`);
-  
-  for (i = 0; i < 7; i++) {
-      insert.run(1, i + 1, 25 * Math.random());
+  const list = db.prepare(`SELECT id FROM stocks`).all();
+
+  // batch insert of randomized prices
+  try {
+    db.transaction(() => {
+      for (stock_id of list) {
+        let price = 1000 * Math.random();
+        for (let i = 0; i < 365; i++) {
+          // provides a normal distribution with Box-Muller transform
+          price_change = Math.sqrt(-2.0 * Math.log(Math.random())) * Math.cos(2.0 * Math.PI * Math.random());
+          // transform to something appropriate for the current price
+          price_change = price_change * price / 10;
+          price += price_change
+          insert.run(stock_id.id, i + 1, price);
+        }
+      }
+    })();
+  } catch (error) {
+    console.error("Batch insert failed: ", error);
   }
-  
   return db.prepare("select stock_id, day, price from prices").all();
 }
 
