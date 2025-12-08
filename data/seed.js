@@ -25,7 +25,7 @@ function seed() {
           // provides a normal distribution with Box-Muller transform
           price_change = Math.sqrt(-2.0 * Math.log(Math.random())) * Math.cos(2.0 * Math.PI * Math.random());
           // transform to something appropriate for the current price
-          price_change = price_change * price / 10;
+          price_change = price_change * price / 30;
           price += price_change
           insert.run(stock_id.id, i + 1, price);
         }

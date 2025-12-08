@@ -6,7 +6,6 @@
 body,
 html {
   margin: 0;
-  padding: 0;
   font-family: Arial, sans-serif;
   background: #f5f5f5;
   color: #333;
@@ -16,6 +15,7 @@ html {
 h1,
 h2 {
   margin-bottom: 15px;
+  padding: 5px;
 }
 
 /* Buttons */
@@ -68,6 +68,7 @@ td {
 }
 
 .dropdown .dropbtn {
+  border-radius: 0;
   font-size: 16px;
   border: none;
   outline: none;
@@ -93,7 +94,7 @@ td {
 
 .dropdown-content a {
   float: none;
-  color: black;
+  color: #111111;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
