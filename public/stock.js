@@ -1,13 +1,13 @@
+// load the premade navbar
+fetch("/navbar.html")
+  .then(res => res.text())
+  .then(html => document.getElementById("navbar").innerHTML = html);
+
 // turn the rows into something usable by the chart maker
 price_arrays = [];
 for (obj of prices) {
   price_arrays.push([obj.day, obj.price]);
 }
-
-// load the premade navbar
-fetch("/navbar.html")
-  .then(res => res.text())
-  .then(html => document.getElementById("navbar").innerHTML = html);
 
 // prep for drawing the chart
 google.charts.load("current", { packages: ["corechart", "line"] });
