@@ -1,6 +1,7 @@
 const express = require('express');
 const { requireLogin } = require('../middleware/auth');
-const { findUserById } = require('../db/db');
+const path = require("path");
+const db = require(path.join(__dirname, "..", "data", "database.js"));
 
 const router = express.Router();
 

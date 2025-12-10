@@ -56,11 +56,10 @@ app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
 
-const loginRouter = require("./routes/login");
-const registerRouter = require("./routes/register");
-const logoutRouter = require("./routes/logout");
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
 
-app.use("/", loginRouter);
-app.use("/", registerRouter);
-app.use("/", logoutRouter);
+app.use("/", authRouter);
+app.use("/", profileRouter);
+
 
