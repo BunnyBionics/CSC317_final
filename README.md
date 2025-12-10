@@ -7,7 +7,7 @@ We are going to create a web-page with a store front to buy and sell stocks on. 
 
 ## Backend Database Design
 
-**Schema Diagram (ERD)**
+**Schema Diagram (ERD):**
 This diagram represents the database structure used by the backend.  
 It shows how our two tables (`stocks` and `prices`) relate to each other in a one-to-many relationship (one stock has many daily price entries).
 
@@ -26,3 +26,4 @@ https://www.figma.com/make/OAw71m89MRs7huBarIJp2h/Entity-Relationship-Diagram?no
 
 - **Database Methods (`server.js`)**  
   Performs queries such as retrieving a stock by symbol and fetching its associated price history, using the schema represented in the diagram.
+
