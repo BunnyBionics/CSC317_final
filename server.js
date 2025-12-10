@@ -4,10 +4,18 @@ const app = express();
 const db = require(path.join(__dirname, "data", "database.js"));
 const seed = require(path.join(__dirname, "data", "seed.js"));
 const PORT = process.env.PORT || 3000;
+const session = require("express-session");
 
 // Serve everything in /public as static assets
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
+
+app.use(session({
+  secret: "super-secret-key",  // replace with anything random
+  resave: false,
+  saveUninitialized: true
+}));
+
 
 // enable pug
 app.set('view engine', 'pug');
@@ -47,3 +55,12 @@ app.post("/api/reseed", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
+
+const loginRouter = require("./routes/login");
+const registerRouter = require("./routes/register");
+const logoutRouter = require("./routes/logout");
+
+app.use("/", loginRouter);
+app.use("/", registerRouter);
+app.use("/", logoutRouter);
+
