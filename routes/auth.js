@@ -4,9 +4,29 @@ const path = require("path");
 const db = require(path.join(__dirname, "..", "data", "database.js"));
 
 const router = express.Router();
+function getFlashMessages(req) {
+  const { error, success } = req.session;
+  delete req.session.error;
+  delete req.session.success;
+  return { error, success };
+}
+
+function getFlashMessages(req) {
+  const { error, success } = req.session;
+  delete req.session.error;
+  delete req.session.success;
+  return { error, success };
+}
 
 router.get('/login', (req, res) => {
-  res.render('auth/login', { title: 'Login' });
+  const { error, success } = getFlashMessages(req);
+
+  res.render('auth/login', {
+    title: 'Login',
+    showNav: false,
+    error,
+    success,
+  });
 });
 
 router.post('/login', async (req, res, next) => {
@@ -41,7 +61,14 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.get('/register', (req, res) => {
-  res.render('auth/register', { title: 'Register' });
+  const { error, success } = getFlashMessages(req);
+
+  res.render('auth/register', {
+    title: 'Register',
+    showNav: false,
+    error,
+    success,
+  });
 });
 
 router.post('/register', async (req, res, next) => {

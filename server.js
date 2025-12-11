@@ -1,66 +1,81 @@
 const path = require("path");
 const express = require("express");
+const session = require("express-session");
+
 const app = express();
 const db = require(path.join(__dirname, "data", "database.js"));
 const seed = require(path.join(__dirname, "data", "seed.js"));
 const PORT = process.env.PORT || 3000;
-const session = require("express-session");
 
+// ----- VIEW ENGINE (Pug) -----
+app.set("view engine", "pug");
+// If your views folder is in the default location "./views", no need to set app.set("views", ...)
 
-app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "login.html"));
-});
+// ----- MIDDLEWARE -----
 
-// Serve everything in /public as static assets
+// Serve everything in /public as static assets (CSS, images, client JS, etc.)
 app.use(express.static(path.join(__dirname, "public")));
+
+// Parse JSON bodies (for reseed API, etc.)
 app.use(express.json());
 
-app.use(session({
-  secret: "super-secret-key",  // replace with anything random
-  resave: false,
-  saveUninitialized: true
-}));
+// Parse form data from POST <form> submissions (for login/register)
+app.use(express.urlencoded({ extended: false }));
 
+// Session middleware (must come BEFORE routers that use req.session)
+app.use(
+  session({
+    secret: "super-secret-key", // change this to something random
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
-// enable pug
-app.set('view engine', 'pug');
+// ----- ROUTERS -----
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
 
+// Auth + profile routes (login, register, dashboard, profile, logout, etc.)
+app.use("/", authRouter);
+app.use("/", profileRouter);
 
-// stock symbols will bring up the stock template populated with data for that stock
+// Landing page: redirect root to /login
+app.get("/", (req, res) => {
+  res.redirect("/login");
+});
+
+// ----- OTHER ROUTES (stocks, reseed) -----
+
+// Stock symbols will bring up the stock template populated with data for that stock
 app.get("/stock/:sym", (req, res) => {
   const sym = req.params.sym.toUpperCase();
   const stock = db.prepare("select * from stocks WHERE symbol = ?").get(sym);
   try {
     const prices = db.prepare("select * from prices WHERE stock_id = ?").all(stock.id);
-    res.render('stock', {stock: stock, price_rows: prices});
+    res.render("stock", { stock: stock, price_rows: prices });
   } catch (error) {
     console.error(`Error finding ${sym} presumably: `, error);
     if (!stock) {
       res.status(404).send(`Stock symbol ${sym} not found`);
     } else {
-      res.status(500).send("Unknown server error, maybe an issue with Pug template")
+      res
+        .status(500)
+        .send("Unknown server error, maybe an issue with Pug template");
     }
-
   }
 });
 
-// route to fill out the price database
+// Route to fill out the price database
 app.get("/reseed", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "reseed.html"));
 });
+
 app.post("/api/reseed", (req, res) => {
   const rows = seed();
   res.json(rows);
 });
 
+// ----- START SERVER -----
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
-
-const authRouter = require("./routes/auth");
-const profileRouter = require("./routes/profile");
-
-app.use("/", authRouter);
-app.use("/", profileRouter);
-
-

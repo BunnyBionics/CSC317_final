@@ -1,16 +1,26 @@
 extends ../layout
 
+block head
+  // Extra stuff that should go in <head> only for the login page
+  link(rel="stylesheet", href="/base.css")
+  link(rel="stylesheet", href="/login-styles.css")
+
 block content
-  h1 Login
-  form(method="POST", action="/login")
-    label(for="username") Username
-    input#username(type="text", name="username", required)
+  .overlay
+    .login-window
+      h1 Welcome to GatorTrade!
 
-    label(for="password") Password
-    input#password(type="password", name="password", required)
+      form(method="POST", action="/login")
+        label(for="username") Username:
+        input(type="text", id="username", name="username", required)
 
-    button(type="submit") Login
+        label(for="password") Password:
+        input(type="password", id="password", name="password", required)
 
-  p
-    | Don't have an account?
-    a(href="/register") Register here.
+        .buttons
+          button(type="submit") Login
+          a.create-account-link(href="/register") Create Account
+
+      p.disclaimer
+        | By creating an account, you agree to absolve us of all responsibility and liability in perpetuity.
+        | GatorTrade is provided "as is" without warranty of any kind, either expressed or implied.
