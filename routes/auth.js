@@ -11,6 +11,14 @@ function getFlashMessages(req) {
   return { error, success };
 }
 
+// authorization functions
+const {
+  findUserByUsername,
+  findUserByEmail,
+  createUser,
+  findUserById
+} = require("../data/userQueries");
+
 function getFlashMessages(req) {
   const { error, success } = req.session;
   delete req.session.error;
@@ -44,7 +52,7 @@ router.post('/login', async (req, res, next) => {
       return res.redirect('/login');
     }
 
-    const match = await bcrypt.compare(password, user.password_hash);
+    const match = await bcrypt.compare(password, user.password);
     if (!match) {
       req.session.error = 'Invalid username or password.';
       return res.redirect('/login');
