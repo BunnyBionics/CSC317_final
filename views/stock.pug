@@ -1,24 +1,49 @@
-doctype html
-html(lang="en")
-  head 
-    title= stock.name
-    link(rel='stylesheet' href='/base.css')
-  header 
-    // creates a <div> with id='navbar'
-    #navbar
-  body 
-    div
-      h1#headline= stock.name
-      h2= '$' + price_rows.at(-1).price.toPrecision(5)
-    // for drawing the chart
-    script(type='text/javascript' src='https://www.gstatic.com/charts/loader.js')
-    #chart_div
+const express = require('express');
+const { requireLogin } = require('../middleware/auth');
+const path = require("path");
+const db = require(path.join(__dirname, "..", "data", "database.js"));
+const { findUserById } = require("../data/userQueries");
 
-    h3= stock.description
+const router = express.Router();
 
-    script(type='text/javascript').
-      // pass price info to external .js
-      var prices = !{JSON.stringify(price_rows)};
+router.get('/dashboard', requireLogin, (req, res) => {
+  res.render('dashboard', {
+    title: 'My Account',
+  });
+});
 
-    // while this .pug is in /views, the rendered html is considered part of /public making pathing unintuitive
-    script(src='/stock.js')
+router.get('/profile', requireLogin, async (req, res, next) => {
+  try {
+    const user = await findUserById(req.session.userId);
+    if (!user) {
+      req.session.error = 'User not found.';
+      return res.redirect('/login');
+    }
+    res.render('profile', { title: 'Your Profile', user });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// shopping cart (requires login)
+router.get('/cart', requireLogin, (req, res) => {
+  res.render('cart', {
+    title: 'Your Cart',
+  });
+});
+
+// store page (requires login)
+router.get('/store', requireLogin, (req, res) => {
+  res.render('store', {
+    title: 'Store',
+  });
+});
+
+// about page (public)
+router.get('/about', (req, res) => {
+  res.render('about', {
+    title: 'About GatorTrade',
+  });
+});
+
+module.exports = router;

@@ -8,28 +8,32 @@ html
     link(rel="stylesheet", href="/css/style.css")
     block head
   body
-  // Only show the header/nav when showNav is not explicitly set to false
-  if showNav !== false
-    header.container
-      nav
-        ul
-          li
-            a(href="/") Auth Demo
-        ul
-          if currentUser
-            li: span Hello, #{currentUser.username}
-            li: a(href="/dashboard") Dashboard
-            li: a(href="/profile") Profile
-            li
-              form(method="POST", action="/logout")
-                button(type="submit" class="secondary") Logout
-          else
-            li: a(href="/login") Login
-            li: a(href="/register") Register
+    // Only show the header/nav when showNav is not explicitly set to false
+    if showNav !== false
+      header.container
+        nav
+          ul
+            if currentUser
+              li: a(href="/dashboard") My Account
+              li: a(href="/cart") Cart
+              li: a(href="/store") Store
+              li: a(href="/about") About
+            else
+              li: a(href="/about") About
 
-  main.container
-    include partials/messages
-    block content
+          ul
+            if currentUser
+              li: span Hello, #{currentUser.username}
+              li
+                form(method="POST", action="/logout")
+                  button(type="submit" class="secondary") Logout
+            else
+              li: a(href="/login") Login
+              li: a(href="/register") Register
 
-  footer.container.footer
-    small Built with Express, Pug, SQLite, sessions, and bcryptjs.
+    main.container
+      include partials/messages
+      block content
+
+    footer.container.footer
+      small FOOTER: GatorTrade &copy; 2005 All rights reserved. This is a fictional website created for educational purposes only.
