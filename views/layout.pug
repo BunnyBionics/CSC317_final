@@ -7,8 +7,8 @@ html
     link(rel="stylesheet", href="/style.css")
   body
     if showNav !== false
-      header.container
-        nav
+      header
+        nav.container
           ul
             if currentUser
               li: a(href="/dashboard") My Account
