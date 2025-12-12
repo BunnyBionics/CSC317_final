@@ -1,49 +1,17 @@
-const express = require('express');
-const { requireLogin } = require('../middleware/auth');
-const path = require("path");
-const db = require(path.join(__dirname, "..", "data", "database.js"));
-const { findUserById } = require("../data/userQueries");
+extends layout
 
-const router = express.Router();
+block content
+  .card.stock-page
+    h1#headline= stock.name
+    h2= '$' + price_rows.at(-1).price.toPrecision(5)
 
-router.get('/dashboard', requireLogin, (req, res) => {
-  res.render('dashboard', {
-    title: 'My Account',
-  });
-});
+    // Chart box 
+    script(type='text/javascript' src='https://www.gstatic.com/charts/loader.js')
+    #chart_div
 
-router.get('/profile', requireLogin, async (req, res, next) => {
-  try {
-    const user = await findUserById(req.session.userId);
-    if (!user) {
-      req.session.error = 'User not found.';
-      return res.redirect('/login');
-    }
-    res.render('profile', { title: 'Your Profile', user });
-  } catch (err) {
-    next(err);
-  }
-});
+    h3= stock.description
 
-// shopping cart (requires login)
-router.get('/cart', requireLogin, (req, res) => {
-  res.render('cart', {
-    title: 'Your Cart',
-  });
-});
+    script(type='text/javascript').
+      var prices = !{JSON.stringify(price_rows)};
 
-// store page (requires login)
-router.get('/store', requireLogin, (req, res) => {
-  res.render('store', {
-    title: 'Store',
-  });
-});
-
-// about page (public)
-router.get('/about', (req, res) => {
-  res.render('about', {
-    title: 'About GatorTrade',
-  });
-});
-
-module.exports = router;
+    script(src='/stock.js')

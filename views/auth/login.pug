@@ -1,10 +1,5 @@
 extends ../layout
 
-block head
-  // Extra stuff that should go in <head> only for the login page
-  link(rel="stylesheet", href="/base.css")
-  link(rel="stylesheet", href="/login-styles.css")
-
 block content
   .overlay
     .login-window
@@ -18,8 +13,8 @@ block content
         input(type="password", id="password", name="password", required)
 
         .buttons
-          button(type="submit") Login
-          a.create-account-link(href="/register") Create Account
+          button(type="submit" class="button-primary") Login
+          a.create-account-link.button-secondary(href="/register") Create Account
 
       p.disclaimer
         | By creating an account, you agree to absolve us of all responsibility and liability in perpetuity.

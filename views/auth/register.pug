@@ -1,17 +1,9 @@
 extends ../layout
 
-block head
-  // Use same styling as login page
-  link(rel="stylesheet", href="/base.css")
-  link(rel="stylesheet", href="/login-styles.css")
-
 block content
   .overlay
     .login-window
       h1 Create Your GatorTrade Account
-
-      // Flash messages (error/success) via layout -> partial
-      // They'll be included above block content by layout, so this is optional.
 
       form(method="POST", action="/register")
         label(for="email") Email:
@@ -27,8 +19,8 @@ block content
         input#confirmPassword(type="password", name="confirmPassword", required)
 
         .buttons
-          button(type="submit") Create Account
-          a.create-account-link(href="/login") Back to Login
+          button(type="submit" class="button-primary") Create Account
+          a.create-account-link.button-secondary(href="/login") Back to Login
 
       p.disclaimer
         | By creating an account, you agree to absolve us of all responsibility and liability in perpetuity.
