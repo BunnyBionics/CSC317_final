@@ -75,11 +75,12 @@ td {
   color: #f5f5f5;
   padding: 14px 16px;
   background-color: inherit;
-  font-family: inherit; 
+  font-family: inherit;
   margin: 0;
 }
 
-.navbar a:hover, .dropdown:hover .dropbtn {
+.navbar a:hover,
+.dropdown:hover .dropbtn {
   background-color: #005fa3;
 }
 
@@ -88,7 +89,7 @@ td {
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
@@ -110,6 +111,38 @@ td {
 }
 /* end Navbar */
 
+/* stock page */
+#stock_info {
+  display: flex;
+  justify-content: space-around;
+  padding: 5px;
+}
+
+#stock_info > * {
+  background-color: lch(99% 28.36 210.52);
+  padding: 5px;
+}
+
+#stock_text {
+  margin: 5px;
+}
+
+#logo {
+  align-self: center;
+  height: 20vw;
+  width: 20vw;
+}
+
+#stock_logo_symbol {
+  display: flex;
+  justify-content: space-between;
+}
+
+#chart_div {
+  width: 40vw;
+}
+
+/* end stock page */
 
 /* Positive/Negative indicators */
 .positive {

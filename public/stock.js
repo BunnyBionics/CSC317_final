@@ -20,6 +20,9 @@ function drawAxisTickColors() {
   data.addColumn("number", "");
   data.addRows(price_arrays);
   var options = {
+    
+    backgroundColor: 'transparent',
+    
     legend: { position: "none" },
     hAxis: {
       title: "Day",
