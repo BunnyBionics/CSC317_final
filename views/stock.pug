@@ -1,29 +1,18 @@
-doctype html
-html(lang="en")
-  head 
-    title= stock.name
-    link(rel='stylesheet' href='/base.css')
-  header 
-    // creates a <div> with id='navbar'
-    #navbar
-  body 
-    div
-      #stock_info
-        #stock_logo_symbol
-          img#logo(src='/images/' + stock.symbol + '.png')
-          #stock_text
-            h1= stock.symbol
-            h2#headline= stock.name
-            h2= '$' + price_rows.at(-1).price.toPrecision(5)
-            h3= stock.description
-        div
-          script(type='text/javascript' src='https://www.gstatic.com/charts/loader.js')
-          #chart_div
+extends layout
+
+block content
+  .card.stock-page
+    img#logo(src='/images/' + stock.symbol + '.png')
+    h1= stock.symbol
+    h2= stock.name
+    h2= '$' + price_rows.at(-1).price.toPrecision(5)
+    h3= stock.description
+    // Chart box 
+    script(type='text/javascript' src='https://www.gstatic.com/charts/loader.js')
+    #chart_div
 
 
     script(type='text/javascript').
-      // pass price info to external .js
       var prices = !{JSON.stringify(price_rows)};
 
-    // while this .pug is in /views, the rendered html is considered part of /public making pathing unintuitive
     script(src='/stock.js')

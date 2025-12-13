@@ -1,0 +1,52 @@
+doctype html
+html
+  head
+    meta(charset="utf8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    title #{title}
+    link(rel="stylesheet", href="/style.css")
+  body
+    if showNav !== false
+      header
+        nav.container
+          // LEFT SIDE: brand + main nav
+          ul.nav-left
+            if currentUser
+              li.site-name
+                a.brand(href="/dashboard") GatorTrade
+              li
+                a(href="/store") Browse Stocks
+              li
+                a(href="/dashboard") My Portfolio
+              li
+                a(href="/about") About
+            else
+              li.site-name
+                a.brand(href="/about") GatorTrade
+              li
+                a(href="/about") About
+
+          // RIGHT SIDE: greeting + cart + logout OR auth links
+          ul.nav-right
+            if currentUser
+              li
+                span Hey, #{currentUser.username}!
+              li
+                form(method="POST", action="/logout")
+                  button(type="submit" class="button-secondary") Logout
+              li
+                a.button-secondary(href="/cart") Cart
+            else
+              li
+                a(href="/login") Login
+              li
+                a(href="/register") Register
+
+    // MAIN CONTENT 
+    main.container
+      include partials/messages
+      block content
+
+    // FOOTER
+    footer.container.footer
+      small Built with Express, Pug, SQLite, sessions, and bcryptjs.
